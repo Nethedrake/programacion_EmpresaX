@@ -6,6 +6,7 @@ public class Empleado {
     private int horasTrabajadas;
     private double valorHora;
     private double sueldo;
+    private Direccion direccion;
 
     public Empleado() {
         this.nombreEmpleado = "Sin definir";
@@ -14,12 +15,13 @@ public class Empleado {
     }
 
 
-    public Empleado(String codigo, String nombreEmpleado, int horasTrabajadas, double valorHora, double sueldo) {
+    public Empleado(String codigo, String nombreEmpleado, int horasTrabajadas, double valorHora, double sueldo, Direccion direccion) {
         this.codigo = codigo;
         this.nombreEmpleado = nombreEmpleado;
         this.horasTrabajadas = horasTrabajadas;
         this.valorHora = valorHora;
         this.sueldo = sueldo;
+        this.direccion = direccion;
     }
 
     public void setSueldo(double sueldo) {
@@ -52,5 +54,23 @@ public class Empleado {
 
     public double getSueldo() {
         return sueldo;
+    }
+
+    public Direccion getDireccion() {return direccion;}
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "codigo='" + codigo + '\'' +
+                ", nombreEmpleado='" + nombreEmpleado + '\'' +
+                ", horasTrabajadas=" + horasTrabajadas +
+                ", valorHora=" + valorHora +
+                ", sueldo=" + sueldo +
+                ", direccion=" + direccion +
+                '}';
     }
 }

@@ -1,20 +1,23 @@
 package services;
 
+import models.Direccion;
 import models.Empleado;
-import services.DireccionService;
-import java.util.ArrayList;
+
+
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class EmpleadoService {
     private Scanner sc;
     private Empleado empleado;
-    private ArrayList<Empleado> listaEmpleado;
-    
+    private HashMap<String,Empleado> listaEmpleado;
+    private DireccionService direccionService;
+    private Direccion direccion;
 
     public EmpleadoService() {
         sc = new Scanner(System.in);
-        listaEmpleado = new ArrayList<>();
-
+        listaEmpleado = new HashMap<>();
+        direccionService = new DireccionService();
     }
 
     public void menu() {
@@ -44,34 +47,24 @@ public class EmpleadoService {
 
     private void listarEmpleados() {
         System.out.println("LISTA DE EMPLEADOS");
-        for (Empleado empleado : listaEmpleado){
-            System.out.println(empleado.getNombreEmpleado() + " | " + empleado.getSueldo());
+        for (Empleado empleado : listaEmpleado.values()){
+            System.out.println(empleado.getNombreEmpleado() + " | " + empleado.getSueldo() + " | " + empleado.getDireccion());
         }
     }
 
-    private int buscarEmpleado() {
+    private Empleado buscarEmpleado() {
         System.out.println("BUSCAR EMPLEADO");
         System.out.println("Ingrese el codigo del empleado");
         String codigo = sc.next();
-        Empleado empleadoEncontrado = null;
-        for (Empleado empleado : listaEmpleado){
-            if(empleado.getCodigo().equals(codigo)){
-                //imprime el empleado
-
-                empleadoEncontrado = empleado;
-
-
-            }
-
-        }
-        return listaEmpleado.indexOf(empleadoEncontrado);
+        empleado = listaEmpleado.get(codigo);
+        System.out.println(empleado);
+        return empleado;
     }
 
     private void modificarEmpleado() {
         System.out.println("MODIFICAR EMPLEADO");
-        int posicion = buscarEmpleado();
-        if (posicion != -1) {
-            empleado = listaEmpleado.get(posicion);
+        empleado = buscarEmpleado();
+        if (empleado != null) {
             System.out.println("Ingrese el nuevo nombre");
             empleado.setNombreEmpleado(sc.next());
             System.out.println("Ingrese las horas");
@@ -81,27 +74,32 @@ public class EmpleadoService {
             double valor = sc.nextDouble();
             empleado.setValorHora(valor);
             empleado.setSueldo(calcularSalario(horas, valor));
-            listaEmpleado.set(posicion,empleado);
+            empleado.setDireccion(direccion);
+            listaEmpleado.put(empleado.getCodigo(),empleado);
+        }else {
+            System.out.println("No se encontro el empleado");
         }
     }
 
     private void crearEmpleado() {
         System.out.println("CREAR EMPLEADOS");
 
-            System.out.println("----Empleado nuevo----");
-            System.out.println("Ingrese el codigo");
-            String codigo = sc.next();
-            System.out.println("Ingrese el nombre");
-            String nombre = sc.next();
-            System.out.println("Ingrese numero de horas");
-            int horas = sc.nextInt();
-            System.out.println("Ingrese el valor de la hora");
-            double valor = sc.nextDouble();
-            listaEmpleado.add(new Empleado(codigo, nombre, horas, valor, calcularSalario(horas, valor)));
+        System.out.println("----Empleado nuevo----");
+        System.out.println("Ingrese el codigo");
+        String codigo = sc.next();
+        System.out.println("Ingrese el nombre");
+        String nombre = sc.next();
+        System.out.println("Ingrese numero de horas");
+        int horas = sc.nextInt();
+        System.out.println("Ingrese el valor de la hora");
+        double valor = sc.nextDouble();
+        direccion = direccionService.crearDireccion();
+
+        empleado =  new Empleado(codigo, nombre, horas, valor, calcularSalario(horas, valor),direccion);
+        listaEmpleado.put(codigo,empleado);
 
 
     }
-
 
     private double calcularSalario(int horas, double valor) {
         return horas * valor;
@@ -109,7 +107,6 @@ public class EmpleadoService {
 
 
 }
-
 
 
 

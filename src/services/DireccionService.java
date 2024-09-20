@@ -12,6 +12,7 @@ public class DireccionService {
     public DireccionService() {
         sc = new Scanner(System.in);
     }
+
     public Direccion crearDireccion(){
     System.out.println("---- Ingresa tu direccion ----");
     System.out.println("Ingrese tu calle");
